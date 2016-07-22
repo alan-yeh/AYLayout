@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'AYLayout_Example' do
+  pod 'AYLayout', :path => '../'
+
+  target 'AYLayout_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

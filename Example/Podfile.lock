@@ -1,0 +1,16 @@
+PODS:
+  - AYLayout (0.1.0)
+
+DEPENDENCIES:
+  - AYLayout (from `../`)
+
+EXTERNAL SOURCES:
+  AYLayout:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AYLayout: 14afb512d9349b90a692ebae823e33357cbc8e48
+
+PODFILE CHECKSUM: 21cdb9d535eaee6c9e13b85af7d35fcabcd1c9fa
+
+COCOAPODS: 1.1.0.beta.1
