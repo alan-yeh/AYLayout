@@ -1,14 +1,34 @@
-# references:
-# * http://www.objc.io/issue-6/travis-ci.html
-# * https://github.com/supermarin/xcpretty#usage
-
 osx_image: xcode7.3
 language: objective-c
-cache: cocoapods
-podfile: Example/Podfile
+
+branches:
+  only:
+    - master
+
 before_install:
-- gem install cocoapods
+- git clone https://github.com/alan-yeh/CI.git
+- cp CI/cocoapods/* ./
+- rm -rf CI
+- rm example.travis.yml
+
+install:
+- bundle install
 - pod install --project-directory=Example
+
 script:
-- set -o pipefail && xcodebuild test -workspace Example/AYLayout.xcworkspace -scheme AYLayout-Example -sdk iphonesimulator9.3 ONLY_ACTIVE_ARCH=NO | xcpretty
-- pod lib lint
+- bundle exec rake pod:lint --quiet
+
+after_success:
+- bundle exec rake pod:tag --quiet
+
+# Generate your secure token with the travis gem:
+# get Github token from your Travis CI profile page
+# gem install travis
+# GH_TOKEN from https://github.com/settings/tokens
+env:
+  global:
+    # travis encrypt 'GH_TOKEN=YOUR_TOKEN'
+    - secure: "hb2dAM+/X5ec/ANPn+hFeLRE4o+L2GIg5zRKPToP2gnejzSc/MYoF5qxH0ckTpF/+w2cWvX4M6gb+56HyC95zD0LrF52HMbMBNwpknEoV0N4ZmiClRo4eI5P2sPv+ffiJq6UxxmbQpNc+mcgmLs4RXe61O49Cbarc414ACmq+WajNJQe5zDexVKMOHrC/XMi5wdVQ/sGGnMMcNygCN/zqWiTciozO13bLpwFElSECqlWXBps+2Snbov28FnM/UQHrH3eqSpCEwzUxJghGk2LGq1lJRarmhoYOKUJewbjjNXFVHQG/Ogk2HhCxVJtiIFaeUwmJe213u4IgI1i0as+21rysseeVQyPWCGh0D5r4q8Lty16h7Tmoj5BGbkd8VBBXk1Ju0FdYOvKKBlbdklyS/iyXPDK88PBtALKFzIxjgIGDF+c8xVr7SoNFoAOoq4syr0QpMKp1eZNPXMBlf2BfgSMB497B0FHADx031WxQtByiH9scno0OlqkXgGQ0nOXgNCn0bzwT9Mv80uL8V0xzS2zFDhH3GtkWQMyiwgQ/HNYOxR54f6DcyE3qHQ6N4soR0HLT3tB7Zc2PuSqRbaITUrSgWr2G6xwi2HIx0jeAstpyVqh84A4FrvhozQKKlRYuXOl/Ai6Z8Zk3e1vJaPNTV3YLsB3mjYpsoYYaLRNI8g="
+    #- PROJECT: AYPromise
+    - GH_USER: alan-yeh
+    - GH_EMAIL: alan@yerl.cn
